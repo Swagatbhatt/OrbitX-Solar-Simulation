@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OrbitX - Scientific Visualization</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Segoe UI', sans-serif; }
+        
+        /* UI Layer */
+        #ui-layer {
+            position: absolute; top: 20px; left: 20px; z-index: 10;
+            color: rgba(255,255,255,0.9); pointer-events: none;
+            text-shadow: 0 0 10px rgba(77, 184, 255, 0.5);
+        }
+        h1 { margin: 0; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; font-size: 1.8rem; border-bottom: 1px solid rgba(77, 184, 255, 0.5); padding-bottom: 10px; display: inline-block;}
+        .subtitle { font-size: 0.9rem; color: #4db8ff; margin-top: 5px; letter-spacing: 1px; }
+
+        /* THE ARTIST SIGNATURE */
+        #signature {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            color: rgba(255, 255, 255, 0.25); /* Subtle watermark look */
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            pointer-events: none; /* Clicks pass through it */
+            z-index: 100;
+            user-select: none; /* Cannot be highlighted/copied */
+            border-right: 2px solid rgba(77, 184, 255, 0.4); /* Small design accent */
+            padding-right: 10px;
+        }
+
+        #reset-btn {
+            pointer-events: auto;
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #4db8ff;
+            color: #4db8ff;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+        }
+        #reset-btn:hover { background: #4db8ff; color: #000; box-shadow: 0 0 20px rgba(77, 184, 255, 0.6); }
+
+        .planet-label {
+            color: rgba(255,255,255,0.8);
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            padding: 2px 4px;
+            pointer-events: none;
+            opacity: 0; 
+            transition: opacity 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 4px black;
+        }
+        .planet-label.visible { opacity: 1; }
+
+        /* SCI-FI DATA CARD */
+        #tooltip {
+            position: absolute; 
+            background: rgba(10, 15, 20, 0.95); 
+            border-left: 3px solid #4db8ff;
+            border-top: 1px solid rgba(77, 184, 255, 0.2);
+            color: #eee; 
+            padding: 20px; 
+            border-radius: 4px; 
+            pointer-events: none; 
+            display: none; 
+            min-width: 240px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+        }
+        #tooltip h3 { margin: 0 0 10px 0; color: #fff; font-size: 1.4rem; letter-spacing: 2px; text-transform: uppercase; }
+        #tooltip .desc { font-size: 0.85rem; color: #aaa; margin-bottom: 15px; line-height: 1.4; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;}
+        
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.75rem; font-family: 'Courier New', monospace; }
+        .data-item { display: flex; flex-direction: column; }
+        .data-label { color: #4db8ff; opacity: 0.7; margin-bottom: 2px; font-size: 0.65rem; text-transform: uppercase; }
+        .data-value { color: #fff; font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <div id="ui-layer">
+        <h1>OrbitX</h1><br>
+        <span class="subtitle">Interactive Solar System Model</span><br>
+        <button id="reset-btn">Reset Camera</button>
+    </div>
+
+    <div id="signature">CONCEPT & CODE BY SB</div>
+
+    <div id="tooltip">
+        <h3 id="t-name">EARTH</h3>
+        <p id="t-desc" class="desc">The Blue Marble.</p>
+        <div class="data-grid">
+            <div class="data-item"><span class="data-label">Age</span><span class="data-value" id="t-age">4.5B Years</span></div>
+            <div class="data-item"><span class="data-label">Surface Temp</span><span class="data-value" id="t-temp">15°C</span></div>
+            <div class="data-item"><span class="data-label">Orbital Speed</span><span class="data-value" id="t-speed">29.8 km/s</span></div>
+            <div class="data-item"><span class="data-label">Distance (Sun)</span><span class="data-value" id="t-dist">149.6 M km</span></div>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+                "@tweenjs/tween.js": "https://unpkg.com/@tweenjs/tween.js@23.1.1/dist/tween.esm.js"
+            }
+        }
+    </script>
+
+    <script type="module" src="app.js"> </script>
+</body>
+</html>
