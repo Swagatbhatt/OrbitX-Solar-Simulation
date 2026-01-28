@@ -3,125 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <title>OrbitX - Scientific Visualization</title>
-    <style>
-        body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Segoe UI', sans-serif; }
-        
-        /* UI Layer */
-        #ui-layer {
-            position: absolute; top: 20px; left: 20px; z-index: 10;
-            color: rgba(255,255,255,0.9); pointer-events: none;
-            text-shadow: 0 0 10px rgba(77, 184, 255, 0.5);
-        }
-        h1 { margin: 0; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; font-size: 1.8rem; border-bottom: 1px solid rgba(77, 184, 255, 0.5); padding-bottom: 10px; display: inline-block;}
-        .subtitle { font-size: 0.9rem; color: #4db8ff; margin-top: 5px; letter-spacing: 1px; }
-
-        /* ARTIST SIGNATURE */
-        #signature {
-            position: absolute; bottom: 20px; right: 30px;
-            color: rgba(255, 255, 255, 0.25);
-            font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 3px;
-            text-transform: uppercase; pointer-events: none; z-index: 100;
-            user-select: none; border-right: 2px solid rgba(77, 184, 255, 0.4); padding-right: 10px;
-        }
-
-        /* BUTTONS */
-        .hud-btn {
-            pointer-events: auto; margin-top: 15px; padding: 8px 16px;
-            background: rgba(0, 0, 0, 0.5); border: 1px solid #4db8ff; color: #4db8ff;
-            cursor: pointer; border-radius: 4px; transition: 0.3s;
-            text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px;
-            display: inline-block; margin-right: 10px;
-        }
-        .hud-btn:hover { background: #4db8ff; color: #000; box-shadow: 0 0 15px rgba(77, 184, 255, 0.6); }
-
-        /* INSTRUCTIONS OVERLAY (New) */
-        #welcome-screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 999;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 1; transition: opacity 0.5s;
-        }
-        #welcome-box {
-            background: rgba(10, 15, 20, 0.9);
-            border: 1px solid #4db8ff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 0 50px rgba(77, 184, 255, 0.2);
-            text-align: center;
-            max-width: 500px;
-            color: #eee;
-        }
-        #welcome-box h2 { margin: 0 0 20px 0; color: #4db8ff; text-transform: uppercase; letter-spacing: 3px; }
-        .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; margin-bottom: 30px; }
-        .control-item { font-size: 0.9rem; color: #aaa; }
-        .key { color: #fff; font-weight: bold; border: 1px solid #555; padding: 2px 6px; border-radius: 4px; background: #222; margin-right: 8px;}
-        #start-btn {
-            background: #4db8ff; color: #000; font-weight: bold; padding: 12px 30px; font-size: 1rem; border: none; cursor: pointer; transition: 0.3s;
-        }
-        #start-btn:hover { background: #fff; box-shadow: 0 0 20px #4db8ff; }
-
-        .planet-label {
-            color: rgba(255,255,255,0.8);
-            font-family: 'Courier New', monospace; font-size: 10px;
-            padding: 2px 4px; pointer-events: none; opacity: 0; 
-            transition: opacity 0.4s; text-transform: uppercase;
-            letter-spacing: 1px; text-shadow: 0 0 4px black;
-        }
-        .planet-label.visible { opacity: 1; }
-
-        /* SCI-FI DATA CARD */
-        #tooltip {
-            position: absolute; background: rgba(10, 15, 20, 0.95); 
-            border-left: 3px solid #4db8ff; border-top: 1px solid rgba(77, 184, 255, 0.2);
-            color: #eee; padding: 20px; border-radius: 4px; 
-            pointer-events: none; display: none; min-width: 240px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px);
-        }
-        #tooltip h3 { margin: 0 0 10px 0; color: #fff; font-size: 1.4rem; letter-spacing: 2px; text-transform: uppercase; }
-        #tooltip .desc { font-size: 0.85rem; color: #aaa; margin-bottom: 15px; line-height: 1.4; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;}
-        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.75rem; font-family: 'Courier New', monospace; }
-        .data-item { display: flex; flex-direction: column; }
-        .data-label { color: #4db8ff; opacity: 0.7; margin-bottom: 2px; font-size: 0.65rem; text-transform: uppercase; }
-        .data-value { color: #fff; font-weight: bold; }
-
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="welcome-screen">
         <div id="welcome-box">
-            <h2>System Controls</h2>
-            <div class="control-grid">
-                <div class="control-item"><span class="key">L-Click + Drag</span> Rotate Camera</div>
-                <div class="control-item"><span class="key">R-Click + Drag</span> Pan Camera</div>
-                <div class="control-item"><span class="key">Scroll</span> Zoom In / Out</div>
-                <div class="control-item"><span class="key">Click Planet</span> Focus & Follow</div>
-                <div class="control-item"><span class="key">Hover</span> Slow Motion & Data</div>
+            <div class="hud-line top"></div>
+            <h2>WELCOME EXPLORER</h2>
+            <p class="sub-header">ORBITAL SIMULATION</p>
+            
+            <div class="instruction-grid">
+                <div class="inst-card">
+                    <div class="icon">🖱️</div>
+                    <div class="text">
+                        <strong>ROTATE & PAN</strong>
+                        <span>L/R Click + Drag</span>
+                    </div>
+                </div>
+                <div class="inst-card">
+                    <div class="icon">📜</div>
+                    <div class="text">
+                        <strong>ZOOM</strong>
+                        <span>Scroll</span>
+                    </div>
+                </div>
+                <div class="inst-card">
+                    <div class="icon">🎯</div>
+                    <div class="text">
+                        <strong>ANALYZE</strong>
+                        <span>Click Planet</span>
+                    </div>
+                </div>
             </div>
-            <p style="font-size: 0.8rem; color: #888; margin-bottom: 20px;">Optimization: Best viewed in Fullscreen (F11)</p>
+
             <button id="start-btn">INITIALIZE SIMULATION</button>
+            <div class="hud-line bottom"></div>
         </div>
     </div>
 
-    <div id="ui-layer">
-        <h1>OrbitX</h1><br>
-        <span class="subtitle">Interactive Solar System Model</span><br>
-        <button id="reset-btn" class="hud-btn">Reset Camera</button>
-        <button id="help-btn" class="hud-btn">?</button>
+   <div id="ui-layer">
+    <div class="header-group">
+        <h1><span class="orbit-text">ORBIT</span><span class="x-text">X</span></h1>
+        <div class="subtitle">INTERACTIVE MODEL</div>
     </div>
+    
+    <div class="button-group">
+        <button id="reset-btn" class="hud-btn">RESET</button>
+        <button id="help-btn" class="hud-btn">HELP</button>
+    </div>
+</div>
 
-    <div id="signature">CONCEPT & CODE BY SB</div>
+    <div id="signature">SYS.ADMIN: SB</div>
 
     <div id="tooltip">
         <h3 id="t-name">EARTH</h3>
         <p id="t-desc" class="desc">The Blue Marble.</p>
-        <div class="data-grid">
-            <div class="data-item"><span class="data-label">Age</span><span class="data-value" id="t-age">4.5B Years</span></div>
-            <div class="data-item"><span class="data-label">Surface Temp</span><span class="data-value" id="t-temp">15°C</span></div>
-            <div class="data-item"><span class="data-label">Orbital Speed</span><span class="data-value" id="t-speed">29.8 km/s</span></div>
-            <div class="data-item"><span class="data-label">Distance (Sun)</span><span class="data-value" id="t-dist">149.6 M km</span></div>
+    </div>
+
+    <div id="side-panel">
+        <button id="close-panel">CLOSE</button>
+        <h2 id="sp-name">EARTH</h2>
+        <div class="type-badge">PLANETARY DATA</div>
+        <p id="sp-desc">Earth is the third planet from the Sun and the only astronomical object known to harbor life.</p>
+        
+        <div class="sp-divider"></div>
+        
+        <div class="sp-stats-grid">
+            <div class="sp-stat">
+                <span class="label">Dist. (Sun)</span>
+                <span class="value" id="sp-distance">-</span>
+            </div>
+            <div class="sp-stat">
+                <span class="label">Year</span>
+                <span class="value" id="sp-orbit">-</span>
+            </div>
+            <div class="sp-stat">
+                <span class="label">Tilt</span>
+                <span class="value" id="sp-tilt">-</span>
+            </div>
+            <div class="sp-stat">
+                <span class="label">Diameter</span>
+                <span class="value" id="sp-diameter">-</span>
+            </div>
+            <div class="sp-stat">
+                <span class="label">Mass</span>
+                <span class="value" id="sp-mass">-</span>
+            </div>
+            <div class="sp-stat">
+                <span class="label">Day</span>
+                <span class="value" id="sp-rotation">-</span>
+            </div>
+            <div class="sp-stat">
+                <span class="label">Gravity</span>
+                <span class="value" id="sp-gravity">-</span>
+            </div>
+            <div class="sp-stat">
+                <span class="label">Temp</span>
+                <span class="value" id="sp-temp">-</span>
+            </div>
+            <div class="sp-stat">
+                <span class="label">Moons</span>
+                <span class="value" id="sp-moons">-</span>
+            </div>
+        </div>
+
+        <div class="sp-divider"></div>
+        
+        <div class="sp-section">
+            <span class="label">COMPOSITION</span>
+            <p id="sp-comp" class="value-text">-</p>
         </div>
     </div>
 
@@ -134,7 +128,6 @@
             }
         }
     </script>
-
-   <script type="module" src="app.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
